@@ -1,181 +1,114 @@
--- Online Bookstore Database Project
--- Tools: PostgreSQL, pgAdmin
--- Author: Saloni
-
--- ============================================================
--- SETUP
--- ============================================================
-
 CREATE DATABASE OnlineBookstore;
 
--- connect to the database before running the rest
--- \c OnlineBookstore;
+-- Switch to the database
+\c OnlineBookstore;
 
-
--- ============================================================
--- CREATE TABLES
--- ============================================================
-
-DROP TABLE IF EXISTS Orders;
+-- Create Tables
 DROP TABLE IF EXISTS Books;
-DROP TABLE IF EXISTS Customers;
-
 CREATE TABLE Books (
-    Book_ID SERIAL PRIMARY KEY,
-    Title VARCHAR(100),
-    Author VARCHAR(100),
-    Genre VARCHAR(50),
-    Published_Year INT,
-    Price NUMERIC(10, 2),
-    Stock INT
+Book_ID SERIAL PRIMARY KEY,
+Title VARCHAR(100),
+Author VARCHAR(100),
+Genre VARCHAR(50),
+Published_Year INT,
+Price NUMERIC(10, 2),
+Stock INT
 );
 
+DROP TABLE IF EXISTS customers;
 CREATE TABLE Customers (
-    Customer_ID SERIAL PRIMARY KEY,
-    Name VARCHAR(100),
-    Email VARCHAR(100),
-    Phone VARCHAR(15),
-    City VARCHAR(50),
-    Country VARCHAR(150)
+Customer_ID SERIAL PRIMARY KEY,
+Name VARCHAR(100),
+Email VARCHAR(100),
+Phone VARCHAR(15),
+City VARCHAR(50),
+Country VARCHAR(150)
 );
 
+DROP TABLE IF EXISTS orders;
 CREATE TABLE Orders (
-    Order_ID SERIAL PRIMARY KEY,
-    Customer_ID INT REFERENCES Customers(Customer_ID),
-    Book_ID INT REFERENCES Books(Book_ID),
-    Order_Date DATE,
-    Quantity INT,
-    Total_Amount NUMERIC(10, 2)
+Order_ID SERIAL PRIMARY KEY,
+Customer_ID INT REFERENCES Customers(Customer_ID),
+Book_ID INT REFERENCES Books(Book_ID),
+Order_Date DATE,
+Quantity INT,
+Total_Amount NUMERIC(10, 2)
 );
-
-
--- ============================================================
--- IMPORT DATA FROM CSV
--- update the file paths below to match your local folder
--- ============================================================
-
-COPY Books(Book_ID, Title, Author, Genre, Published_Year, Price, Stock)
-FROM 'C:\YourFolder\CSV\Books.csv'
-CSV HEADER;
-
-COPY Customers(Customer_ID, Name, Email, Phone, City, Country)
-FROM 'C:\YourFolder\CSV\Customers.csv'
-CSV HEADER;
-
-COPY Orders(Order_ID, Customer_ID, Book_ID, Order_Date, Quantity, Total_Amount)
-FROM 'C:\YourFolder\CSV\Orders.csv'
-CSV HEADER;
-
-
--- ============================================================
--- VERIFY DATA
--- ============================================================
 
 SELECT * FROM Books;
 SELECT * FROM Customers;
 SELECT * FROM Orders;
 
+-- Import Data into Books Table
+COPY Books(Book_ID, Title, Author, Genre, Published_Year, Price, Stock)
+FROM 'D:\Course Updates\30 Day Series\SQL\CSV\Books.csv'
+CSV HEADER;
 
--- ============================================================
--- BASIC QUERIES
--- ============================================================
+-- Import Data into Customers Table
+COPY Customers(Customer_ID, Name, Email, Phone, City, Country)
+FROM 'D:\Course Updates\30 Day Series\SQL\CSV\Customers.csv'
+CSV HEADER;
 
--- 1) All books in the Fiction genre
+-- Import Data into Orders Table
+COPY Orders(Order_ID, Customer_ID, Book_ID, Order_Date, Quantity, Total_Amount)
+FROM 'D:\Course Updates\30 Day Series\SQL\CSV\Orders.csv'
+CSV HEADER;
+
+-- 1) Retrieve all books in the "Fiction" genre:
 SELECT * FROM Books
-WHERE Genre = 'Fiction';
+WHERE Genre='Fiction';
 
--- 2) Books published after 1950
+-- 2) Find books published after the year 1950:
 SELECT * FROM Books
-WHERE Published_Year > 1950;
+WHERE Published_year>1950;
 
--- 3) Customers from Canada
+-- 3) List all customers from the Canada:
 SELECT * FROM Customers
-WHERE Country = 'Canada';
+WHERE country='Canada';
 
--- 4) Orders placed in November 2023
+-- 4) Show orders placed in November 2023:
 SELECT * FROM Orders
-WHERE Order_Date BETWEEN '2023-11-01' AND '2023-11-30';
+WHERE order_date BETWEEN '2023-11-01' AND '2023-11-30';
 
--- 5) Total stock of all books combined
-SELECT SUM(Stock) AS Total_Stock
-FROM Books;
+-- 5) Retrieve the total stock of books available:
+SELECT SUM(stock) AS Total_Stock
+From Books;
 
+-- Advance Questions : 
 
--- ============================================================
--- ADVANCED QUERIES
--- ============================================================
-
--- 1) Total books sold per genre
-SELECT b.Genre, SUM(o.Quantity) AS Total_Books_Sold
+-- 1) Retrieve the total number of books sold for each genre:
+SELECT * FROM ORDERS;
+SELECT b.Genre, SUM(o.Quantity) AS Total_Books_sold
 FROM Orders o
-JOIN Books b ON o.Book_ID = b.Book_ID
-GROUP BY b.Genre
-ORDER BY Total_Books_Sold DESC;
+JOIN Books b ON o.book_id = b.book_id
+GROUP BY b.Genre;
 
--- 2) Average price of books in the Fantasy genre
-SELECT AVG(Price) AS Average_Price
+-- 2) Find the average price of books in the "Fantasy" genre:
+SELECT AVG(price) AS Average_Price
 FROM Books
 WHERE Genre = 'Fantasy';
 
--- 3) Customers who placed at least 2 orders
-SELECT o.Customer_ID, c.Name, COUNT(o.Order_ID) AS Order_Count
-FROM Orders o
-JOIN Customers c ON o.Customer_ID = c.Customer_ID
-GROUP BY o.Customer_ID, c.Name
-HAVING COUNT(o.Order_ID) >= 2
-ORDER BY Order_Count DESC;
+-- 3) List customers who have placed at least 2 orders:
+SELECT o.customer_id, c.name, COUNT(o.Order_id) AS ORDER_COUNT
+FROM orders o
+JOIN customers c ON o.customer_id=c.customer_id
+GROUP BY o.customer_id, c.name
+HAVING COUNT(Order_id) >=2;
 
--- 4) Most frequently ordered book
-SELECT o.Book_ID, b.Title, COUNT(o.Order_ID) AS Order_Count
-FROM Orders o
-JOIN Books b ON o.Book_ID = b.Book_ID
-GROUP BY o.Book_ID, b.Title
-ORDER BY Order_Count DESC
-LIMIT 1;
+-- 4) Find the most frequently ordered book:
+SELECT o.Book_id, b.title, COUNT(o.order_id) AS ORDER_COUNT
+FROM orders o
+JOIN books b ON o.book_id=b.book_id
+GROUP BY o.book_id, b.title
+ORDER BY ORDER_COUNT DESC LIMIT 1;
 
--- 5) Top 3 most expensive books in the Fantasy genre
-SELECT * FROM Books
-WHERE Genre = 'Fantasy'
-ORDER BY Price DESC
-LIMIT 3;
+-- 5) Show the top 3 most expensive books of 'Fantasy' Genre :
+SELECT * FROM books
+WHERE genre ='Fantasy'
+ORDER BY price DESC LIMIT 3;
 
--- 6) Total quantity sold per author
-SELECT b.Author, SUM(o.Quantity) AS Total_Books_Sold
-FROM Orders o
-JOIN Books b ON o.Book_ID = b.Book_ID
-GROUP BY b.Author
-ORDER BY Total_Books_Sold DESC;
-
-
--- ============================================================
--- BONUS QUERIES
--- ============================================================
-
--- 7) Revenue generated per genre
-SELECT b.Genre, SUM(o.Total_Amount) AS Total_Revenue
-FROM Orders o
-JOIN Books b ON o.Book_ID = b.Book_ID
-GROUP BY b.Genre
-ORDER BY Total_Revenue DESC;
-
--- 8) Books that are low on stock (less than 40 copies left)
-SELECT Title, Author, Stock
-FROM Books
-WHERE Stock < 40
-ORDER BY Stock ASC;
-
--- 9) Month-wise total orders in 2024
-SELECT TO_CHAR(Order_Date, 'Month') AS Month,
-       COUNT(Order_ID) AS Total_Orders
-FROM Orders
-WHERE EXTRACT(YEAR FROM Order_Date) = 2024
-GROUP BY TO_CHAR(Order_Date, 'Month'), EXTRACT(MONTH FROM Order_Date)
-ORDER BY EXTRACT(MONTH FROM Order_Date);
-
--- 10) Top 5 customers by total amount spent
-SELECT c.Name, SUM(o.Total_Amount) AS Total_Spent
-FROM Orders o
-JOIN Customers c ON o.Customer_ID = c.Customer_ID
-GROUP BY c.Name
-ORDER BY Total_Spent DESC
-LIMIT 5;
+-- 6) Retrieve the total quantity of books sold by each author:
+SELECT b.author, SUM(o.quantity) AS Total_Books_Sold
+FROM orders o
+JOIN books b ON o.book_id=b.book_id
+GROUP BY b.Author;
