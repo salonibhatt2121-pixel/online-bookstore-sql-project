@@ -1,1 +1,22 @@
+Book_ID,Title,Author,Genre,Published_Year,Price,Stock
+1,The Great Gatsby,F. Scott Fitzgerald,Fiction,1925,499.00,50
+2,To Kill a Mockingbird,Harper Lee,Fiction,1960,399.00,40
+3,1984,George Orwell,Fiction,1949,349.00,60
+4,A Brief History of Time,Stephen Hawking,Science,1988,599.00,30
+5,The Hobbit,J.R.R. Tolkien,Fantasy,1937,449.00,45
+6,Harry Potter and the Sorcerers Stone,J.K. Rowling,Fantasy,1997,499.00,80
+7,The Name of the Wind,Patrick Rothfuss,Fantasy,2007,399.00,35
+8,Sapiens,Yuval Noah Harari,Non-Fiction,2011,649.00,55
+9,Atomic Habits,James Clear,Non-Fiction,2018,599.00,70
+10,The Alchemist,Paulo Coelho,Fiction,1988,299.00,65
+11,Dune,Frank Herbert,Fantasy,1965,549.00,40
+12,The Da Vinci Code,Dan Brown,Mystery,2003,399.00,50
+13,Gone Girl,Gillian Flynn,Mystery,2012,349.00,45
+14,A Game of Thrones,George R.R. Martin,Fantasy,1996,599.00,38
+15,The Subtle Art of Not Giving a F*ck,Mark Manson,Non-Fiction,2016,499.00,60
+16,Cosmos,Carl Sagan,Science,1980,449.00,25
+17,The Fault in Our Stars,John Green,Fiction,2012,299.00,55
+18,Sherlock Holmes Complete,Arthur Conan Doyle,Mystery,1892,699.00,30
+19,Mistborn,Brandon Sanderson,Fantasy,2006,499.00,42
+20,Rich Dad Poor Dad,Robert Kiyosaki,Non-Fiction,1997,399.00,75
 
