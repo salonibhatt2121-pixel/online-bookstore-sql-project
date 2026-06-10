@@ -1,1 +1,16 @@
-
+Customer_ID,Name,Email,Phone,City,Country
+1,Aarav Sharma,aarav.sharma@gmail.com,9876543210,Delhi,India
+2,Emily Johnson,emily.j@outlook.com,4161234567,Toronto,Canada
+3,Liam Brown,liam.brown@yahoo.com,2025550193,New York,USA
+4,Priya Mehta,priya.mehta@gmail.com,9845012345,Mumbai,India
+5,Noah Williams,noah.w@gmail.com,6135557890,Ottawa,Canada
+6,Ananya Singh,ananya.singh@gmail.com,9712345678,Bangalore,India
+7,Olivia Davis,olivia.d@hotmail.com,3125559876,Chicago,USA
+8,Rajan Patel,rajan.patel@gmail.com,9654321098,Ahmedabad,India
+9,Emma Wilson,emma.w@gmail.com,6045551234,Vancouver,Canada
+10,Arjun Nair,arjun.nair@gmail.com,9823456789,Kochi,India
+11,Lucas Martin,lucas.m@yahoo.com,2125554321,New York,USA
+12,Sneha Iyer,sneha.iyer@gmail.com,9900112233,Chennai,India
+13,Mia Thompson,mia.t@gmail.com,4035556789,Calgary,Canada
+14,Vikram Rao,vikram.rao@gmail.com,9811223344,Hyderabad,India
+15,Isabella Garcia,isabella.g@outlook.com,3055558765,Miami,USA
